@@ -9,11 +9,9 @@ class packageBodyCreate {
 
     }
 
-    this.body = Bodies.rectangle(this.x, this.y, 5, 5, options);
+    this.body = Bodies.rectangle(x, y, width, height, options);
 	  this.width = width;
     this.height = height;
-    this.x = x;
-    this.y = y;
     
     World.add(world, this.body);
 
@@ -31,4 +29,4 @@ class packageBodyCreate {
     rect(pos.x, pos.y, this.width, this.height);
     pop();
   }
-};
+}
