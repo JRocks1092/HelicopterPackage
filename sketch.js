@@ -2,7 +2,6 @@ var helicopterIMG, helicopterSprite, packageSprite, packageIMG;
 var packageBody, ground;
 var isMoving = false;
 var isFalling = false;
-var pos;
 
 const Engine = Matter.Engine;
 const World = Matter.World;
@@ -20,28 +19,29 @@ function setup() {
 	createCanvas(800, 700);
 	rectMode(CENTER);
 
-	packageSprite = createSprite(width / 2, 80, 10, 10);
+	packageSprite = createSprite(400, 200, 10, 10);
 	packageSprite.addImage(packageIMG)
 	packageSprite.scale = 0.2
 
-	helicopterSprite = createSprite(width / 2, 200, 10, 10);
+	helicopterSprite = createSprite(400, 200, 10, 10);
 	helicopterSprite.addImage(helicopterIMG);
 	helicopterSprite.scale = 0.6;
 
-	groundSprite = createSprite(width / 2, height - 35, width, 10);
+	groundSprite = createSprite(400, 700 - 35, this.width, 10);
 	groundSprite.shapeColor = color(255);
 
 
 	engine = Engine.create();
 	world = engine.world;
 
-	packageBody = new packageBodyCreate (width/2, height-35, 10,10);
+	packageBody = new packageBodyCreate(400, 200, 5, 5);
+	//Matter.Body.setStatic(packageBody.body, true);
 
 	//Create a Ground
-	ground = Bodies.rectangle(width / 2, 650, width, 10, { isStatic: true });
+	ground = Bodies.rectangle(400, 650, 800, 10, { isStatic: true });
 	World.add(world, ground);
 
-	boxPosition = width / 2 - 100
+	boxPosition = 400 - 100
 	boxY = 610;
 
 
@@ -70,7 +70,7 @@ function setup() {
 
 
 function draw() {
-	
+
 	background(0);
 
 	Engine.update(engine);
@@ -81,7 +81,7 @@ function draw() {
 	boxDrop();
 	controlHeli();
 
-	console.log(packageBody.body.position.x);
+	console.log(packageBody.body.position.y);
 
 	drawSprites();
 
@@ -89,34 +89,12 @@ function draw() {
 
 function controlHeli() {
 
-	/*
-	
-	if (keyDown("right")) {
-
-		helicopterSprite.velocityX = 3;
-						
-	}
-
-	else if (keyDown("left")) {
-
-		helicopterSprite.velocityX = -3;
-						
-	}
-
-	else{
-
-		helicopterSprite.velocityX = 0;
-
-	}
-	
-	*/
-	///*
-
 	if (!isFalling) {
 
 		if (keyDown("right")) {
 
 			helicopterSprite.x = helicopterSprite.x + 10;
+			packageBody.body.position.x = packageBody.body.position.x + 10;
 			//Matter.Body.translate(packageBody, pos);
 			isMoving = true;
 
@@ -125,7 +103,7 @@ function controlHeli() {
 		else if (keyDown("left")) {
 
 			helicopterSprite.x = helicopterSprite.x - 10;
-			//packageBody.position.x = packageBody.position.x - 10;
+			packageBody.body.position.x = packageBody.body.position.x - 10;
 			isMoving = true;
 
 		}
@@ -138,7 +116,7 @@ function controlHeli() {
 
 		if (!isMoving) {
 
-			//Matter.Body.setVelocity(packageBody, 0);
+			//Matter.Body.setVelocity(packageBody.body, 0);
 
 		}
 
@@ -155,11 +133,10 @@ function boxDrop() {
 
 	}
 
-	if(isFalling){
+	if (isFalling) {
 
 		Matter.Body.setStatic(packageBody.body, false);
 
 	}
 
 }
-
